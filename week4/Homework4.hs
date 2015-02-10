@@ -11,7 +11,7 @@
 -- takeWhile. Look them up in the Prelude documentation to see what they
 -- do.
 
-module HW4 where
+module Homework4 where
 
 import Data.List
 
@@ -77,10 +77,13 @@ myFoldl f base xs = foldr (flip f) base (reverse xs)
 
 -- Exercise 4: Finding primes
 
-sieveSundaram :: Integer -> [Integer]
-sieveSundaram = map (\x -> 2*x+1) (filter (not (flip elem) ) . prods
-    where prods n = cartProd [1..n] [1..n]
-          exclude n = [i+j+2*i*j | (i, j) <- prods n]
-
 cartProd :: [a] -> [b] -> [(a, b)]
 cartProd xs ys = [(x,y) | x <- xs, y <- ys]
+
+exclude :: Integer -> [Integer]
+exclude n = map (\(i, j) -> i + j + 2*i*j) $ cartProd [1..n] [1..n]
+
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram = nums
+    where nums n = let excluded = exclude n
+                   in [2*i + 1 | i <- [1..n], not (elem i excluded)]
