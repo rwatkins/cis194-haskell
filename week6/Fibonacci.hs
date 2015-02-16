@@ -91,6 +91,5 @@ instance Num Matrix where
 
 fib4 :: Integer -> Integer
 fib4 0 = 0
-fib4 1 = 1
 fib4 n = let (Matrix x _ _ _) = (Matrix 1 1 1 0)^n
          in x
