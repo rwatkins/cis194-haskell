@@ -1,6 +1,7 @@
 module JoinList where
 
 import Data.Monoid
+import Scrabble
 import Sized
 
 
@@ -62,3 +63,8 @@ takeJ n jl@(Append m jl1 jl2)
     | n >= jlSize jl  = jl
     | n <= jlSize jl1 = takeJ n jl1
     | otherwise       = jl1 +++ takeJ (n - jlSize jl1) jl2
+
+-- Exercise 3
+
+scoreLine :: String -> JoinList Score String
+scoreLine s = Single (scoreString s) s
