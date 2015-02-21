@@ -10,6 +10,7 @@ import Sized
 data JoinList m a = Empty
                   | Single m a
                   | Append m (JoinList m a) (JoinList m a)
+    deriving Show
 
 tag :: Monoid m => JoinList m a -> m
 tag Empty = mempty
