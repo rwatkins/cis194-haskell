@@ -19,6 +19,7 @@ score c | u `elem` "AEILNORSTU" = Score 1
         | u `elem` "K"          = Score 5
         | u `elem` "JX"         = Score 8
         | u `elem` "QXZ"        = Score 10
+        | otherwise             = Score 0
     where u = toUpper c
 
 scoreString :: String -> Score
