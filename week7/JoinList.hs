@@ -1,6 +1,9 @@
+{-# LANGUAGE FlexibleInstances #-}
 module JoinList where
 
+import Buffer
 import Data.Monoid
+import Editor
 import Scrabble
 import Sized
 
@@ -69,3 +72,34 @@ takeJ n jl@(Append m jl1 jl2)
 
 scoreLine :: String -> JoinList Score String
 scoreLine s = Single (scoreString s) s
+
+
+-- Exercise 4
+
+fromLines :: [String] -> JoinList (Score, Size) String
+fromLines []     = Empty
+fromLines (x:xs) = (Single (scoreString x, Size 1) x) +++ fromLines xs
+
+instance Buffer (JoinList (Score, Size) String) where
+    toString = mconcat . jlToList
+
+    fromString = fromLines . lines
+
+    line = indexJ
+
+    replaceLine i s buf = takeJ (i-1) buf +++ fromString s +++ dropJ i buf
+
+    numLines = jlSize
+
+    value Empty                       = 0
+    value (Single ((Score i), _) _)   = i
+    value (Append ((Score i), _) _ _) = i
+
+main :: IO ()
+main = runEditor editor
+           (fromString $ unlines
+            [ "This buffer is for notes you don't want to save, and for"
+            , "evaluation of steam valve coefficients."
+            , "To load a different file, type the character L followed"
+            , "by the name of the file."
+            ] :: (JoinList (Score, Size) String))
